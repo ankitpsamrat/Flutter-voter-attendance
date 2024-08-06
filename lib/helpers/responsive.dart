@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:votar_attendance/helpers/navigation.dart';
+
+import 'navigation.dart';
 
 class AppUI {
   static double dh =

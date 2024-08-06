@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:votar_attendance/helpers/responsive.dart';
+
+import '../../../helpers/responsive.dart';
 
 class CustomSwitch extends StatelessWidget {
   final String title;

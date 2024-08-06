@@ -1,10 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:votar_attendance/constants/assets.dart';
-import 'package:votar_attendance/constants/colors.dart';
-import 'package:votar_attendance/helpers/navigation.dart';
-import 'package:votar_attendance/helpers/responsive.dart';
-import 'package:votar_attendance/src/auth/screens/login_screen.dart';
+
+import '../../../constants/assets.dart';
+import '../../../constants/colors.dart';
+import '../../../helpers/navigation.dart';
+import '../../../helpers/responsive.dart';
+import 'login_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});

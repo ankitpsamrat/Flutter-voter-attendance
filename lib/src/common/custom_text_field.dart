@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:votar_attendance/helpers/responsive.dart';
+
+import '../../../helpers/responsive.dart';
 
 class CustomTextField extends StatelessWidget {
   final TextEditingController? controller;

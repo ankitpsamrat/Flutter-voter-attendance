@@ -2,12 +2,17 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:votar_attendance/constants/colors.dart';
 
-import 'package:votar_attendance/src/voters/models/pending_voter_model.dart';
+import '../../../constants/colors.dart';
+import '../../../helpers/responsive.dart';
+import '../../auth/models/user_info_model.dart';
+import '../../common/custom_snackbar.dart';
+import '../models/pending_voter_model.dart';
 
 class AttendedVoters extends StatefulWidget {
-  const AttendedVoters({super.key});
+  final UserInfoModel userInfo;
+
+  const AttendedVoters({super.key, required this.userInfo});
 
   @override
   State<AttendedVoters> createState() => _AttendedVotersState();
@@ -44,6 +49,35 @@ class _AttendedVotersState extends State<AttendedVoters> {
     }
   }
 
+  Future<void> _updateAttendedVoters({required String regNo}) async {
+    try {
+      final response = await http.post(
+        Uri.parse(
+            'http://166.0.242.94:80/voterattendence/excelrows/userId/${widget.userInfo.userId}/regNo/$regNo/hasVoted/false'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Basic YXBpa2V5Om1ldXNhbTEyIw==',
+        },
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        CustomSnackbar.showSnackbar(
+          msg: 'Marked pending!',
+          duration: const Duration(seconds: 1),
+        );
+      } else {
+        CustomSnackbar.showSnackbar(
+          msg: 'Failed to voter attended',
+          bgColor: AppColors.red,
+          duration: const Duration(seconds: 1),
+        );
+        throw Exception('Failed to voter attended');
+      }
+    } catch (e) {
+      debugPrint('Unable to voter attended: $e');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -73,10 +107,30 @@ class _AttendedVotersState extends State<AttendedVoters> {
                   key: Key(voter.regNo.toString()),
                   background: Container(color: AppColors.white),
                   direction: DismissDirection.endToStart,
+                  onDismissed: (_) async {
+                    await _updateAttendedVoters(regNo: voter.regNo);
+
+                    setState(() {
+                      snapshot.data.removeAt(index);
+                    });
+                  },
                   child: ListTile(
                     leading: Text('${index + 1}'),
-                    title: Text(voter.firmName),
-                    subtitle: Text(voter.rep1),
+                    dense: true,
+                    contentPadding: EdgeInsets.only(left: 4 * AppUI.dw),
+                    title: Text(
+                      '${voter.firmName} (${voter.regNo})',
+                      style: TextStyle(
+                        fontSize: 10 * AppUI.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    subtitle: Text(
+                      '${voter.rep1} ${(voter.mob1.isEmpty) ? '' : "(${voter.mob1})"}',
+                      style: TextStyle(
+                        fontSize: 9 * AppUI.sp,
+                      ),
+                    ),
                   ),
                 );
               },

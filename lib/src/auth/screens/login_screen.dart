@@ -2,16 +2,17 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:votar_attendance/constants/assets.dart';
-import 'package:votar_attendance/constants/colors.dart';
-import 'package:votar_attendance/helpers/navigation.dart';
-import 'package:votar_attendance/helpers/responsive.dart';
-import 'package:votar_attendance/src/auth/models/user_info_model.dart';
-import 'package:votar_attendance/src/auth/screens/forgot_password.dart';
-import 'package:votar_attendance/src/common/custom_button.dart';
-import 'package:votar_attendance/src/common/custom_snackbar.dart';
-import 'package:votar_attendance/src/common/custom_text_field.dart';
-import 'package:votar_attendance/src/home/screens/home_screen.dart';
+
+import '../../../constants/assets.dart';
+import '../../../constants/colors.dart';
+import '../../../helpers/navigation.dart';
+import '../../../helpers/responsive.dart';
+import '../../common/custom_button.dart';
+import '../../common/custom_snackbar.dart';
+import '../../common/custom_text_field.dart';
+import '../../home/screens/home_screen.dart';
+import '../models/user_info_model.dart';
+import 'forgot_password.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -37,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       final response = await http.get(
         Uri.parse(
-            'http://166.0.242.94:80/api/users/User-Login?login.username=$userName&login.password=$password'),
+            'http://166.0.242.94:80/voterattendence/users/User-Login?login.username=$userName&login.password=$password'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Basic YXBpa2V5Om1ldXNhbTEyIw==',
@@ -53,9 +54,9 @@ class _LoginScreenState extends State<LoginScreen> {
         CustomSnackbar.showSnackbar(msg: 'Login successfully!');
         Navigation.navigatorKey.currentState!.push(
           MaterialPageRoute(
-            builder: (context) => const HomeScreen(
-                // userInfo: _userInfo!,
-                ),
+            builder: (context) => HomeScreen(
+              userInfo: _userInfo!,
+            ),
           ),
         );
       } else {

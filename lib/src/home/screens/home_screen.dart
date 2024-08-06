@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 
-import 'package:votar_attendance/helpers/responsive.dart';
-import 'package:votar_attendance/src/voters/screens/attended_voters.dart';
-import 'package:votar_attendance/src/voters/screens/pending_voters.dart';
+import '../../../helpers/responsive.dart';
+import '../../auth/models/user_info_model.dart';
+import '../../voters/screens/attended_voters.dart';
+import '../../voters/screens/pending_voters.dart';
+import 'profile_menu.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final UserInfoModel userInfo;
+
+  const HomeScreen({super.key, required this.userInfo});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -16,6 +20,7 @@ class _HomeScreenState extends State<HomeScreen>
   //
 
   late TabController _tabController;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -37,9 +42,19 @@ class _HomeScreenState extends State<HomeScreen>
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: const Text('Dashboard'),
+          title: const Text('Booth no: 32'),
+          leading: Visibility(
+            visible: widget.userInfo.isAdmin,
+            child: IconButton(
+              onPressed: () {
+                _scaffoldKey.currentState!.openDrawer();
+              },
+              icon: const Icon(Icons.menu, size: 30),
+            ),
+          ),
           bottom: TabBar(
             labelPadding: EdgeInsets.zero,
             labelColor: Colors.black,
@@ -66,11 +81,12 @@ class _HomeScreenState extends State<HomeScreen>
             ],
           ),
         ),
-        body: const TabBarView(
-          physics: NeverScrollableScrollPhysics(),
+        drawer: ProfileMenu(userInfo: widget.userInfo),
+        body: TabBarView(
+          physics: const NeverScrollableScrollPhysics(),
           children: [
-            PendingVoters(),
-            AttendedVoters(),
+            PendingVoters(userInfo: widget.userInfo),
+            AttendedVoters(userInfo: widget.userInfo),
           ],
         ),
       ),

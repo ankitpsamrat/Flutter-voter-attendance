@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:votar_attendance/constants/colors.dart';
-import 'package:votar_attendance/helpers/responsive.dart';
-import 'package:votar_attendance/src/common/custom_button.dart';
-import 'package:votar_attendance/src/common/custom_snackbar.dart';
-import 'package:votar_attendance/src/common/custom_text_field.dart';
+
+import '../../../constants/colors.dart';
+import '../../../helpers/responsive.dart';
+import '../../common/custom_button.dart';
+import '../../common/custom_snackbar.dart';
+import '../../common/custom_text_field.dart';
 
 class ForgotPassword extends StatelessWidget {
   const ForgotPassword({super.key});

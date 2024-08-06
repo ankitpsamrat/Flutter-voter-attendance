@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:votar_attendance/constants/colors.dart';
-import 'package:votar_attendance/helpers/navigation.dart';
-import 'package:votar_attendance/helpers/responsive.dart';
+import '../../../constants/colors.dart';
+import '../../../helpers/navigation.dart';
+import '../../../helpers/responsive.dart';
 
 class CustomSnackbar {
 //
